@@ -1,2 +1,5 @@
 # MalSensor
-The code will be uploaded within 1 week
+The code and readme will be updated later.
+
+# Useage
+The static analysis script needs to be placed in the IDA directory and run auto.py
