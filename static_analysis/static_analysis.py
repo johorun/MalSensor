@@ -23,8 +23,8 @@ def controller():
     def callback(ea, name, ordinal):
         imports[current].append((ea, name, ordinal))
         return True 
-    #print(ida_nalt.get_import_module_qty()) 函数库的数量索引
-    FileType = idaapi.get_file_type_name() #获取文件类型
+
+    FileType = idaapi.get_file_type_name() 
     basename = ida_nalt.get_root_filename()
     if FileType == 'Portable executable for 80386 (PE)' or FileType == 'Portable executable for AMD64 (PE)':
         info_filename = "I:\\20220728\MalwareBazaar\\PE_packed\\"+ basename + ".info"
@@ -36,7 +36,7 @@ def controller():
     #asm_filename = basename + ".asm"     
     #idc.gen_file(idc.OFILE_ASM, basename + ".asm", 0, idc.BADADDR, 0)       
     #output_file = open(info_filename,'w')        
-    funcs = idautils.Functions() #funcs is entrypoint返回的是入口点也就是地址     
+    funcs = idautils.Functions() #funcs is entrypoint
     for f in funcs:        
         #function_extract(output_file, f, callees) # extract functions data
         func_name = get_func_name(f)
@@ -57,7 +57,7 @@ def controller():
             for caller in CodeRefsTo(f, 1):
                 caller_name = get_func_name(caller)
                 callees.setdefault(func_name,[]).append(caller_name)
-#idautils先把整个图构建起来，再用imports去把所有的外部导入函数有遗漏的补全
+
                         
     tic = time.time() - tic
     with open('I:\\20220728\\new.txt', 'a+') as f:
