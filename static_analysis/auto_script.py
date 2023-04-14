@@ -15,9 +15,7 @@ def parseargs():
 def main():
     args = parseargs()
     ida_path = args.idapro
-    #返回当前目录的绝对路径
     work_dir = os.path.abspath('.')
-    #拼接路径
     #pefile_dir = os.path.join(work_dir, 'pefile')
     pefile_dir = args.dir
     script_path = os.path.join(work_dir, 'apicount.py')
