@@ -4,7 +4,6 @@ import time
 import argparse
 import csv
 import numpy as np
-#import tensorflow as tf
 import os
 from multiprocessing import Pool as ThreadPool
 from functools import partial
@@ -13,9 +12,6 @@ import random
 from sklearn.model_selection import KFold
 from sklearn.metrics import f1_score, precision_score, accuracy_score, recall_score
 from itertools import islice
-import warnings
-warnings.filterwarnings("ignore")
-
 knn1time = []
 knn3time = []
 rftime = []
@@ -112,7 +108,7 @@ def knn_1(vectors, labels):
         f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
         precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
         recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred)
+        accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred, )
 
         # print(f1)
         # TP = np.sum(np.multiply(test_Y, y_pred)) #对于0，1时求内积可以反映预测情况，但多分类时就不适用了
@@ -247,264 +243,17 @@ def randomforest(vectors, labels):
     print(F1s)
     return [np.mean(F1s), np.mean(Precisions), np.mean(Recalls), np.mean(Accuracys)]
 
-from sklearn.tree import DecisionTreeClassifier
-def decisiontree(vectors, labels):   
-    X = np.array(vectors)
-    Y = np.array(labels)
-
-    kf = KFold(n_splits=10)
-    i = 0
-    F1s = []
-    Precisions = []
-    Recalls = []
-    Accuracys = []
-
-    for train_index, test_index in kf.split(X):
-        train_X, train_Y = X[train_index], Y[train_index]
-        test_X, test_Y = X[test_index], Y[test_index]
-
-        clf = DecisionTreeClassifier(max_depth=8, random_state=0)
-        tic = time.time()
-        clf.fit(train_X, train_Y)
-        tic1 = time.time()
-        print(tic1-tic)
-        rftime.append(tic1-tic)
-
-        y_pred = clf.predict(test_X)
-        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred)
-
-        F1s.append(f1)
-        Precisions.append(precision)
-        Recalls.append(recall)
-        Accuracys.append(accuracy)
-
-    print(F1s)
-    return [np.mean(F1s), np.mean(Precisions), np.mean(Recalls), np.mean(Accuracys)]
-
-from sklearn.naive_bayes import GaussianNB,MultinomialNB,ComplementNB,BernoulliNB,CategoricalNB
-def naivebayes(vectors,labels):
-    X = np.array(vectors)
-    Y = np.array(labels)
-
-    kf = KFold(n_splits=10)
-    i = 0
-    F1s = []
-    Precisions = []
-    Recalls = []
-    Accuracys = []
-
-    for train_index, test_index in kf.split(X):
-        train_X, train_Y = X[train_index], Y[train_index]
-        test_X, test_Y = X[test_index], Y[test_index]
-
-        clf = BernoulliNB(force_alpha=True)
-        tic = time.time()
-        clf.fit(train_X, train_Y)
-        tic1 = time.time()
-        print(tic1-tic)
-        rftime.append(tic1-tic)
-
-        y_pred = clf.predict(test_X)
-        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred)
-
-        F1s.append(f1)
-        Precisions.append(precision)
-        Recalls.append(recall)
-        Accuracys.append(accuracy)
-
-    print(F1s)
-    return [np.mean(F1s), np.mean(Precisions), np.mean(Recalls), np.mean(Accuracys)]
-
-from sklearn.svm import SVC,NuSVC,LinearSVC
-def svm(vectors, labels):
-    X = np.array(vectors)
-    Y = np.array(labels)
-
-    kf = KFold(n_splits=10)
-    i = 0
-    F1s = []
-    Precisions = []
-    Recalls = []
-    Accuracys = []
-
-    for train_index, test_index in kf.split(X):
-        train_X, train_Y = X[train_index], Y[train_index]
-        test_X, test_Y = X[test_index], Y[test_index]
-
-        clf = SVC(C=600.0,degree=3,gamma='scale',kernel='rbf')
-        tic = time.time()
-        clf.fit(train_X, train_Y)
-        tic1 = time.time()
-        print(tic1-tic)
-        rftime.append(tic1-tic)
-
-        y_pred = clf.predict(test_X)
-        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred)
-
-        F1s.append(f1)
-        Precisions.append(precision)
-        Recalls.append(recall)
-        Accuracys.append(accuracy)
-
-    print(F1s)
-    return [np.mean(F1s), np.mean(Precisions), np.mean(Recalls), np.mean(Accuracys)]
-
-from sklearn.neural_network import MLPClassifier
-def mlp(vectors,labels):
-    X = np.array(vectors)
-    Y = np.array(labels)
-
-    kf = KFold(n_splits=10)
-    i = 0
-    F1s = []
-    Precisions = []
-    Recalls = []
-    Accuracys = []
-
-    for train_index, test_index in kf.split(X):
-        train_X, train_Y = X[train_index], Y[train_index]
-        test_X, test_Y = X[test_index], Y[test_index]
-        
-        print(train_X.shape)
-        #le = LabelEncoder()
-        #train_Y = le.fit_transform(train_Y)
-
-        clf = MLPClassifier(random_state=0, learning_rate_init=0.005)
-        tic = time.time()
-        clf.fit(train_X, train_Y)
-        tic1 = time.time()
-        print(tic1-tic)
-        rftime.append(tic1-tic)
-
-        y_pred = clf.predict(test_X)
-        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred)
-
-        F1s.append(f1)
-        Precisions.append(precision)
-        Recalls.append(recall)
-        Accuracys.append(accuracy)
-
-    print(F1s)
-    return [np.mean(F1s), np.mean(Precisions), np.mean(Recalls), np.mean(Accuracys)]
-
-def myMLP(vectors,labels):
-    # 定义 MLP 模型类
-    class MLP(nn.Module):
-        def __init__(self, input_dim, num_classes):
-            super(MLP, self).__init__()
-            self.fc1 = nn.Linear(input_dim, 512)
-            self.fc2 = nn.Linear(512, 512)
-            self.fc3 = nn.Linear(512, num_classes)
-            self.relu = nn.ReLU()
-            self.dropout = nn.Dropout(0.2)
-            
-        def forward(self, x):
-            x = self.relu(self.fc1(x))
-            x = self.dropout(x)
-            x = self.relu(self.fc2(x))
-            x = self.dropout(x)
-            x = self.fc3(x)
-            return x
-
-    # 创建 MLP 模型实例并指定输入维度和输出类别数
-    model = MLP(input_dim=vectors, num_classes=labels)
-
-    # 定义损失函数、优化器和评价指标
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters())
-    metrics = {'accuracy': nn.functional.softmax}
-
-    # 定义训练参数
-    num_epochs = 1000
-    batch_size = 100
-    val_ratio = 0.1
-
-    # 将数据转换为 PyTorch 张量
-    X_train_tensor = torch.Tensor(X_train)
-    Y_train_tensor = torch.LongTensor(Y_train)
-    X_val_tensor = torch.Tensor(X_val)
-    Y_val_tensor = torch.LongTensor(Y_val)
-
-    # 划分训练集和验证集
-    dataset = torch.utils.data.TensorDataset(X_train_tensor, Y_train_tensor)
-    train_set, val_set = torch.utils.data.random_split(dataset, [int((1-val_ratio)*len(dataset)), int(val_ratio*len(dataset))])
-
-    # 定义训练集和验证集的 DataLoader
-    train_loader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=True)
-    val_loader = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=False)
-
-    # 开始训练
-    for epoch in range(num_epochs):
-        # 训练模型
-        model.train()
-        train_loss = 0.0
-        train_acc = 0.0
-        for inputs, targets in train_loader:
-            optimizer.zero_grad()
-            outputs = model(inputs)
-            loss = criterion(outputs, targets)
-            loss.backward()
-            optimizer.step()
-            train_loss += loss.item() * inputs.size(0)
-            train_acc += metrics['accuracy'](outputs, targets)[0].item() * inputs.size(0)
-        train_loss /= len(train_set)
-        train_acc /= len(train_set)
-
-        # 在验证集上评估模型
-        model.eval()
-        val_loss = 0.0
-        val_acc = 0.0
-        for inputs, targets in val_loader:
-            with torch.no_grad():
-                outputs = model(inputs)
-                loss = criterion(outputs, targets)
-                val_loss += loss.item() * inputs.size(0)
-                val_acc += metrics['accuracy'](outputs, targets)[0].item() * inputs.size(0)
-        val_loss /= len(val_set)
-        val_acc /= len(val_set)
-
-        # 打印训练和验证集上的损失和准确率
-        print(f"Epoch {epoch+1}/{num_epochs} - train_loss: {train_loss:.4f} - train_acc: {train_acc:.4f} - val_loss: {val_loss:.4f} - val_acc: {val_acc:.4f}")
-        
-
-
-
-
-
 def classification(vectors, labels):
     Vectors, Labels = random_features(vectors, labels)
 
-    csv_data = [[] for i in range(7)]
+    csv_data = [[] for i in range(4)]
     csv_data[0] = ['ML_Algorithm', 'F1', 'Precision', 'Recall', 'Accuracy']
-    """
     csv_data[1].append('KNN-1')
     csv_data[1].extend(knn_1(Vectors, Labels))
     csv_data[2].append('KNN-3')
     csv_data[2].extend(knn_3(Vectors, Labels))
     csv_data[3].append('Random Forest')
     csv_data[3].extend(randomforest(Vectors, Labels))
-    csv_data[4].append('SVM')
-    csv_data[4].extend(svm(Vectors, Labels))
-    csv_data[5].append('Desicion Tree')
-    csv_data[5].extend(decisiontree(Vectors, Labels))
-    """
-    csv_data[6].append('Multi-layer Perceptron')
-    csv_data[6].extend(mlp(Vectors, Labels))
-
-    # csv_data[8].append('dnn')
-    # csv_data[8].extend(dnn(Vectors, Labels))
 
     return csv_data
 
@@ -529,7 +278,7 @@ def main():
         degree_vectors, degree_labels = degree_centrality_feature(feature_dir)
         degree_csv_data = classification(degree_vectors, degree_labels)
         degree_reults = out_put + 'degree_result.csv'
-        with open(degree_reults, 'w', newline='') as f_degree: # w
+        with open(degree_reults, 'w', newline='') as f_degree:
             csvfile = csv.writer(f_degree)
             csvfile.writerows(degree_csv_data)
     elif type == 'harmonic':
