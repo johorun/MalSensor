@@ -27,5 +27,5 @@ Disassembly
 
 Put the `auto_script.py` `static_analysis.py` in the IDA Pro working directory. 
 
-Run `python auto_script.py` `-i` IDA_path `-d` Malware_path 
+Run `python auto_script.py`  `-i`  IDA_path  `-d`  Malware_path 
 
