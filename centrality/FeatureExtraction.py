@@ -98,7 +98,7 @@ def obtain_dataset(dataset_path, centrality_type, sensitive_apis):
         
     else:
 
-        apps_m = glob.glob(dataset_path + '/malware/*.gexf')
+        apps_m = glob.glob(dataset_path + '/*.gexf')
     pool_b = ThreadPool(15)
     pool_m = ThreadPool(15)
     if centrality_type == 'degree':
