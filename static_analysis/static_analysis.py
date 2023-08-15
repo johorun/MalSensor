@@ -26,10 +26,9 @@ def controller():
 
     FileType = idaapi.get_file_type_name() 
     basename = ida_nalt.get_root_filename()
-    if FileType == 'Portable executable for 80386 (PE)' or FileType == 'Portable executable for AMD64 (PE)':
-        info_filename = "I:\\20220728\MalwareBazaar\\PE_packed\\"+ basename + ".info"
-    else:
-        info_filename = "I:\\20220728\MalwareBazaar\\noPE_packed\\"+ basename + ".info"
+    
+    info_filename = basename + ".info"
+
     
     callees = dict()        
     tic = time.time()
@@ -60,7 +59,7 @@ def controller():
 
                         
     tic = time.time() - tic
-    with open('I:\\20220728\\new.txt', 'a+') as f:
+    with open('time.txt', 'a+') as f:
         f.write(basename+'  ')
         f.write(str(tic)+'\n')
     with open(info_filename,'w') as f:
@@ -75,7 +74,7 @@ def controller():
                 if demangled is not None:
                     caller_name = demangled
                 f.write(caller_name + '\n')
-    with open('I:\\20220728\\imp_API.txt', 'a+') as f:
+    with open('imp_API.txt', 'a+') as f:    # all the import APIs
         for API in imp_API:
             demangled = idc.demangle_name(API, idc.get_inf_attr(idc.INF_SHORT_DN))
             if demangled is not None:
