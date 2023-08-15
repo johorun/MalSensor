@@ -30,4 +30,12 @@ Put the `auto_script.py` `static_analysis.py` in the IDA Pro working directory.
 Run `python auto_script.py`   `-d`  Malware_path   `-i`  IDA_path 
 
 
+FeatureExtraction
+
+Run `python3 FeatureExtraction.py`  `-d`  Gexf_path  `-o`  Output_path `-c`  Centrality_type 
+
+
+Classification
+
+Run  `python3 Classification.py` `-d` features_csv_path `-o` Output_path `-t` Centrality_type
 
