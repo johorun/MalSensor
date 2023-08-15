@@ -18,7 +18,7 @@ def main():
     work_dir = os.path.abspath('.')
     #pefile_dir = os.path.join(work_dir, 'pefile')
     pefile_dir = args.dir
-    script_path = os.path.join(work_dir, 'apicount.py')
+    script_path = os.path.join(work_dir, 'static_analysis.py')
 
     pefile_list = os.listdir(pefile_dir)
     pefile_num = len(pefile_list)
