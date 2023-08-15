@@ -31,12 +31,14 @@ def callgraph_extraction(file):
 def degree_centrality_feature(file, sensitive_apis):
     sha256 = file.split('/')[-1].split('.')[0]
     CG = callgraph_extraction(file)
+
     node_centrality = nx.degree_centrality(CG)
-    
+
     vector = []
     for api in sensitive_apis:
         if api in node_centrality.keys():
             vector.append(node_centrality[api])
+            #vector.append(1)
         else:
             vector.append(0)
 
@@ -45,15 +47,14 @@ def degree_centrality_feature(file, sensitive_apis):
 def katz_centrality_feature(file, sensitive_apis):
     sha256 = file.split('/')[-1].split('.')[0]
     CG = callgraph_extraction(file)
-    node_centrality = nx.katz_centrality(CG)
-
+    node_centrality = nx.katz_centrality(CG) 
     vector = []
     for api in sensitive_apis:
         if api in node_centrality.keys():
             vector.append(node_centrality[api])
         else:
             vector.append(0)
-
+            
     return (sha256, vector)
 
 def closeness_centrality_feature(file, sensitive_apis):
@@ -89,31 +90,41 @@ def obtain_dataset(dataset_path, centrality_type, sensitive_apis):
     Labels = []
 
     if dataset_path[-1] == '/':
-        apps_b = glob.glob(dataset_path + 'benign/*.gexf')
-        apps_m = glob.glob(dataset_path + 'malware/*.gexf')
-    else:
-        apps_b = glob.glob(dataset_path + '/benign/*.gexf')
-        apps_m = glob.glob(dataset_path + '/malware/*.gexf')
 
+
+        apps_m1 = glob.glob(dataset_path + '*.gexf')
+
+        apps_m = apps_m1
+        
+    else:
+
+        apps_m = glob.glob(dataset_path + '/malware/*.gexf')
     pool_b = ThreadPool(15)
     pool_m = ThreadPool(15)
     if centrality_type == 'degree':
-        vector_b = pool_b.map(partial(degree_centrality_feature, sensitive_apis=sensitive_apis), apps_b)
+        tic = time.time()
         vector_m = pool_m.map(partial(degree_centrality_feature, sensitive_apis=sensitive_apis), apps_m)
+        tic1 = time.time() - tic
+        print(tic1)
     elif centrality_type == 'katz':
-        vector_b = pool_b.map(partial(katz_centrality_feature, sensitive_apis=sensitive_apis), apps_b)
+        tic = time.time()
         vector_m = pool_m.map(partial(katz_centrality_feature, sensitive_apis=sensitive_apis), apps_m)
+        tic1 = time.time() - tic
+        print(tic1)
     elif centrality_type == 'closeness':
-        vector_b = pool_b.map(partial(closeness_centrality_feature, sensitive_apis=sensitive_apis), apps_b)
+        tic = time.time()
         vector_m = pool_m.map(partial(closeness_centrality_feature, sensitive_apis=sensitive_apis), apps_m)
+        tic1 = time.time() - tic
+        print(tic1)
     elif centrality_type == 'harmonic':
-        vector_b = pool_b.map(partial(harmonic_centrality_feature, sensitive_apis=sensitive_apis), apps_b)
+        tic = time.time()
         vector_m = pool_m.map(partial(harmonic_centrality_feature, sensitive_apis=sensitive_apis), apps_m)
+        tic1 = time.time() - tic
+        print(tic1)
     else:
         print('Error Centrality Type!')
 
-    Vectors.extend(vector_b)
-    Labels.extend([0 for i in range(len(vector_b))])
+
 
     Vectors.extend(vector_m)
     Labels.extend([1 for i in range(len(vector_m))])
@@ -121,19 +132,25 @@ def obtain_dataset(dataset_path, centrality_type, sensitive_apis):
     return Vectors, Labels
 
 def main():
-    sensitive_apis_path = 'sensitive_apis.txt'
-    sensitive_apis = obtain_sensitive_apis(sensitive_apis_path)
+    sensitive_apis_path = '/home/zhj/data2/20220728/MalwareBazaar/APIlist.txt'
+    sensitive_apis = obtain_sensitive_apis(sensitive_apis_path)    
 
     args = parseargs()
     dataset_path = args.dir
     cetrality_type = args.centrality
 
     Vectors, Labels = obtain_dataset(dataset_path, cetrality_type, sensitive_apis)
+
     feature_csv = [[] for i in range(len(Labels)+1)]
     feature_csv[0].append('SHA256')
     feature_csv[0].extend(sensitive_apis)
     feature_csv[0].append('Label')
-
+    '''
+    SHA256,api1,api2,...,Label
+    xxxxxx,0,1,0,0,...,0/1
+    ...
+    
+    '''
     for i in range(len(Labels)):
         (sha256, vector) = Vectors[i]
         feature_csv[i+1].append(sha256)
