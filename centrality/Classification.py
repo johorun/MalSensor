@@ -105,9 +105,9 @@ def knn_1(vectors, labels):
         y_pred = clf.predict(test_X)
         # tic1 = time.time()
         # print((tic1-tic)/398)
-        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
+        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='micro')
+        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='micro')
+        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='micro')
         accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred, )
 
 
@@ -142,9 +142,9 @@ def knn_3(vectors, labels):
         print(tic1-tic)
         knn3time.append(tic1-tic)
         y_pred = clf.predict(test_X)
-        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
+        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='micro')
+        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='micro')
+        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='micro')
         accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred)
 
         
@@ -184,9 +184,9 @@ def randomforest(vectors, labels):
         rftime.append(tic1-tic)
 
         y_pred = clf.predict(test_X)
-        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='macro')
-        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='macro')
+        f1 = f1_score(y_true=test_Y, y_pred=y_pred, average='micro')
+        precision = precision_score(y_true=test_Y, y_pred=y_pred, average='micro')
+        recall = recall_score(y_true=test_Y, y_pred=y_pred, average='micro')
         accuracy = accuracy_score(y_true=test_Y, y_pred=y_pred)
 
 
