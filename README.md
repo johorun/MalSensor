@@ -22,6 +22,8 @@ Dataset:<https://github.com/MHunt-er/Benchmarking-Malware-Family-Classification>
 
 ## Useage
 
+### For MalwareBazaar
+
 Disassembly
 
 Put the `auto_script.py` `static_analysis.py` in the IDA Pro working directory. 
@@ -43,7 +45,6 @@ Run `python cg.py` to generate the function call graph of each sample.
 FeatureExtraction
 
 Run `python FeatureExtraction.py`  `-d`  Gexf_path  `-o`  Output_path `-c`  Centrality_type 
-
 
 
 Then, run `python transtomulti.py` to generate the feature csv file with sample feature vectors and label information according to the centrality.
