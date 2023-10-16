@@ -24,7 +24,7 @@ def controller():
         imports[current].append((ea, name, ordinal))
         return True 
 
-    FileType = idaapi.get_file_type_name() 
+    #FileType = idaapi.get_file_type_name() 
     basename = ida_nalt.get_root_filename()
     
     info_filename = basename + ".info"
