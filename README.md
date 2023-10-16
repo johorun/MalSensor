@@ -59,7 +59,7 @@ Run `transform.py` to move the .gexf files to the `gexf_pre` or `gexf_post` dire
 FeatureExtraction
 
 Run `python FeatureExtraction.py`  `-d`  Gexf_path  `-o`  Output_path `-c`  Centrality_type  # For MalwareDrift, Gexf_path is the upper directory of `gexf_pre` and `gexf_pre`
-
+[//]: # "哈哈我是注释，不会在浏览器中显示。"
 
 Then, run `python transtomulti.py` to generate the feature csv file with sample feature vectors and label information according to the centrality.
 
